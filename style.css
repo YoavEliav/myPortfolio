@@ -1,4 +1,4 @@
-/* איפוס הגדרות בסיסיות */
+/* === Base Reset & Theme === */
 * {
     margin: 0;
     padding: 0;
@@ -6,20 +6,20 @@
 }
 
 body {
-    background-color: #2b2b2b; /* הצבע הראשי הכהה של PyCharm */
-    color: #a9b7c6; /* צבע הטקסט האפור-בהיר */
+    background-color: #2b2b2b; /* PyCharm Dark Background */
+    color: #a9b7c6; /* Default Text Color */
     font-family: 'JetBrains Mono', monospace;
     height: 100vh;
-    overflow: hidden; /* מונע גלילה של כל העמוד */
+    overflow: hidden; 
 }
 
-/* מבנה ראשי: סרגל צד + אזור ראשי + שורת סטטוס */
+/* === Main Layout === */
 .ide-container {
     display: flex;
-    height: calc(100vh - 25px); /* משאיר מקום לסטטוס בר למטה */
+    height: calc(100vh - 25px); /* Leave space for status bar */
 }
 
-/* === סרגל צד === */
+/* === Sidebar (Left) === */
 .sidebar {
     width: 250px;
     background-color: #313335;
@@ -35,21 +35,66 @@ body {
     border-bottom: 1px solid #1e1e1e;
 }
 
+.file-tree {
+    flex: 1;
+    overflow-y: auto;
+}
+
 .folder-root {
     padding: 10px;
     font-weight: bold;
     color: #a9b7c6;
 }
 
-/* === אזור העריכה === */
+.folder-root i {
+    font-size: 0.7rem;
+    margin-right: 5px;
+    color: #a9b7c6;
+}
+
+/* File List Styling */
+.file-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
+
+.file-item {
+    padding: 5px 10px 5px 25px; 
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #a9b7c6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.file-item:hover {
+    background-color: #2d2f30;
+}
+
+.file-item.active {
+    background-color: #4b6eaf; /* Selection Blue */
+    color: #ffffff;
+}
+
+/* Icons Colors */
+.icon-python { color: #3572A5; }
+.icon-js { color: #f1e05a; }
+.icon-json { color: #f1e05a; }
+.icon-txt { color: #a9b7c6; }
+
+/* === Editor Area (Right) === */
 .editor-area {
-    flex: 1; /* תופס את כל שאר המקום */
+    flex: 1;
     display: flex;
     flex-direction: column;
     background-color: #2b2b2b;
+    overflow: hidden;
 }
 
-/* בר הטאבים */
+/* Tabs Bar */
 .tabs-bar {
     height: 35px;
     background-color: #313335;
@@ -62,23 +107,24 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 8px; /* רווח בין האייקון לטקסט */
+    gap: 8px;
     font-size: 0.9rem;
     cursor: pointer;
     border-right: 1px solid #1e1e1e;
 }
 
 .tab.active {
-    background-color: #2b2b2b; /* צבע הטאב הפעיל מתמזג עם העורך */
-    border-top: 2px solid #4d78cc; /* הפס הכחול למעלה */
+    background-color: #2b2b2b;
+    border-top: 2px solid #4d78cc;
     color: #a9b7c6;
 }
 
-/* גוף הקוד */
+/* Code Container */
 .code-container {
-    flex: 1;
+    flex: 1; /* Takes available space above terminal */
     display: flex;
     padding-top: 10px;
+    overflow-y: auto; /* Scroll if code is long */
 }
 
 .line-numbers {
@@ -87,15 +133,86 @@ body {
     padding-right: 15px;
     color: #606366;
     border-right: 1px solid #313335;
-    user-select: none; /* שלא יהיה אפשר לסמן את המספרים */
+    user-select: none;
+    line-height: 1.5; 
 }
 
 .code-content {
+    flex: 1;
     padding-left: 15px;
     color: #a9b7c6;
+    line-height: 1.5; 
 }
 
-/* === שורת סטטוס תחתונה === */
+/* === Terminal / CMD Section === */
+.terminal-wrapper {
+    height: 180px;
+    background-color: #2b2b2b;
+    border-top: 1px solid #1e1e1e;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-header {
+    padding: 5px 10px;
+    background-color: #313335;
+    border-bottom: 1px solid #1e1e1e;
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: #787878;
+}
+
+.term-tab.active {
+    color: #a9b7c6;
+    border-bottom: 2px solid #a9b7c6;
+}
+
+.terminal-body {
+    padding: 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #a9b7c6;
+    overflow-y: auto;
+}
+
+.term-line { margin-bottom: 5px; }
+.term-path { color: #ffc66d; }
+.term-cmd { color: #a9b7c6; }
+
+/* Social Links in Terminal */
+.social-row {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-row a {
+    color: #6897bb;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.social-row a:hover {
+    text-decoration: underline;
+    color: #629755;
+}
+
+.social-row i {
+    width: 20px;
+    text-align: center;
+    color: #808080;
+}
+
+/* Blinking Cursor (Terminal) */
+.typing-cursor {
+    animation: blink 1s step-end infinite;
+    font-weight: bold;
+}
+
+/* === Status Bar === */
 .status-bar {
     height: 25px;
     background-color: #313335;
@@ -107,84 +224,28 @@ body {
     gap: 20px;
 }
 
-.file-list {
-    list-style: none; /* Remove bullet points */
-    padding-left: 0;
-    margin-top: 5px;
-}
-
-.file-item {
-    padding: 5px 10px 5px 25px; /* Indent for tree structure look */
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #a9b7c6;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.2s;
-}
-
-/* Hover effect for files */
-.file-item:hover {
-    background-color: #2d2f30;
-}
-
-/* Selected file styling */
-.file-item.active {
-    background-color: #4b6eaf; /* Blue selection background */
-    color: #ffffff;
-}
-
-/* Icons Colors */
-.icon-python { color: #3572A5; } /* Python Blue */
-.icon-js { color: #f1e05a; }     /* JS Yellow */
-.icon-json { color: #f1e05a; }   /* JSON Yellow */
-.icon-txt { color: #a9b7c6; }    /* Text Grey */
-
-/* Folder chevron */
-.folder-root i {
-    font-size: 0.7rem;
-    margin-right: 5px;
-    color: #a9b7c6;
-}
-
-/* Code Content Handling */
-.file-content {
-    /* Preserve whitespace and font for code blocks */
-    white-space: pre-wrap; 
-}
-
-/* Remove default pre/code margins */
-pre {
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-
-/* התאמה של Prism לרקע שלנו */
+/* === PrismJS Overrides (Seamless Background) === */
 pre[class*="language-"],
 code[class*="language-"] {
     background: transparent !important;
     text-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     font-family: 'JetBrains Mono', monospace !important;
     font-size: 1rem;
 }
 
-/* === Typing Effect Cursor === */
-
-/* The blinking cursor animation */
+/* === Typewriter Effect Cursor (Main Editor) === */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
-/* We will add this class via JS while typing */
 .typing::after {
     content: '|';
     color: #a9b7c6;
     animation: blink 1s step-end infinite;
     margin-left: 2px;
-
 }
 
 /* =========================================
@@ -193,31 +254,29 @@ code[class*="language-"] {
 
 @media screen and (max-width: 768px) {
     
-    /* 1. Change layout from row to column */
+    /* 1. Change layout to column */
     .ide-container {
         flex-direction: column;
-        height: calc(100vh - 30px); /* Adjust height for mobile screens */
+        height: calc(100vh - 30px);
     }
 
-    /* 2. Sidebar becomes a top menu */
+    /* 2. Sidebar becomes top horizontal menu */
     .sidebar {
-        width: 100%; /* Full width */
-        height: auto; /* Height determined by content */
+        width: 100%;
+        height: auto;
         border-right: none;
         border-bottom: 1px solid #1e1e1e;
-        overflow-x: auto; /* Enable horizontal scrolling if many files exist */
+        overflow-x: auto; /* Scrollable menu */
     }
 
-    /* Hide "Project" header on mobile to save space */
     .sidebar-header, .folder-root {
         display: none;
     }
 
-    /* Style file list as buttons */
     .file-list {
-        display: flex; /* Arrange files in a row instead of a column */
+        display: flex;
         padding: 10px;
-        gap: 10px; /* Gap between buttons */
+        gap: 10px;
         margin: 0;
     }
 
@@ -225,30 +284,21 @@ code[class*="language-"] {
         background-color: #3c3f41;
         padding: 8px 12px;
         border-radius: 5px;
-        white-space: nowrap; /* Prevent line breaks in file name */
+        white-space: nowrap;
         border: 1px solid #1e1e1e;
     }
 
     .file-item.active {
-        border: 1px solid #4b6eaf; /* More prominent highlight on mobile */
+        border: 1px solid #4b6eaf;
     }
 
-    /* 3. Hide redundant tabs (since we have the top menu) */
-    .tabs-bar {
-        display: none;
-    }
+    /* 3. Hide Tabs */
+    .tabs-bar { display: none; }
 
-    /* 4. Adjust editor area */
-    .editor-area {
-        width: 100%;
-        overflow: hidden;
-    }
+    /* 4. Adjust Editor */
+    .editor-area { width: 100%; }
+    .code-container { overflow-x: auto; }
 
-    .code-container {
-        overflow-x: auto; /* Enable horizontal scrolling within the code itself */
-    }
-
-    /* Reduce font size and spacing on mobile */
     .code-content, .line-numbers {
         font-size: 0.85rem; 
         line-height: 1.4;
@@ -256,12 +306,22 @@ code[class*="language-"] {
     
     .line-numbers {
         padding-right: 8px;
-        width: 35px; /* Less space for line numbers */
+        width: 35px;
     }
 
-    /* Adjust bottom status bar */
-    .status-bar {
-        font-size: 0.7rem;
-        justify-content: space-between;
+    /* 5. Adjust Terminal for Mobile */
+    .terminal-wrapper {
+        height: auto;
+        min-height: 150px;
+    }
+    
+    .term-path {
+        display: block; /* Break line for path */
+        margin-bottom: 2px;
+    }
+    
+    .social-row {
+        margin-left: 0;
+        font-size: 0.85rem;
     }
 }
