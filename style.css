@@ -184,4 +184,84 @@ code[class*="language-"] {
     color: #a9b7c6;
     animation: blink 1s step-end infinite;
     margin-left: 2px;
+
+}
+
+/* =========================================
+   Mobile Optimization (Responsive Design)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+    
+    /* 1. Change layout from row to column */
+    .ide-container {
+        flex-direction: column;
+        height: calc(100vh - 30px); /* Adjust height for mobile screens */
+    }
+
+    /* 2. Sidebar becomes a top menu */
+    .sidebar {
+        width: 100%; /* Full width */
+        height: auto; /* Height determined by content */
+        border-right: none;
+        border-bottom: 1px solid #1e1e1e;
+        overflow-x: auto; /* Enable horizontal scrolling if many files exist */
+    }
+
+    /* Hide "Project" header on mobile to save space */
+    .sidebar-header, .folder-root {
+        display: none;
+    }
+
+    /* Style file list as buttons */
+    .file-list {
+        display: flex; /* Arrange files in a row instead of a column */
+        padding: 10px;
+        gap: 10px; /* Gap between buttons */
+        margin: 0;
+    }
+
+    .file-item {
+        background-color: #3c3f41;
+        padding: 8px 12px;
+        border-radius: 5px;
+        white-space: nowrap; /* Prevent line breaks in file name */
+        border: 1px solid #1e1e1e;
+    }
+
+    .file-item.active {
+        border: 1px solid #4b6eaf; /* More prominent highlight on mobile */
+    }
+
+    /* 3. Hide redundant tabs (since we have the top menu) */
+    .tabs-bar {
+        display: none;
+    }
+
+    /* 4. Adjust editor area */
+    .editor-area {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .code-container {
+        overflow-x: auto; /* Enable horizontal scrolling within the code itself */
+    }
+
+    /* Reduce font size and spacing on mobile */
+    .code-content, .line-numbers {
+        font-size: 0.85rem; 
+        line-height: 1.4;
+    }
+    
+    .line-numbers {
+        padding-right: 8px;
+        width: 35px; /* Less space for line numbers */
+    }
+
+    /* Adjust bottom status bar */
+    .status-bar {
+        font-size: 0.7rem;
+        justify-content: space-between;
+    }
 }
