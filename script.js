@@ -30,6 +30,8 @@ function switchFile(fileId) {
 // === Function to type code effect ===
 function typeCode(elementId, text) {
     const container = document.getElementById(elementId);
+    if (!container) return; // הגנה למקרה שהאלמנט לא נמצא
+    
     const codeBlock = container.querySelector('code');
     
     codeBlock.textContent = ""; 
@@ -99,41 +101,57 @@ document.addEventListener('DOMContentLoaded', () => {
         typeCode('content-about', rawText);
     }
 
-    // 3. === TERMINAL RESIZER LOGIC (NEW) ===
+    // 3. === TERMINAL RESIZER LOGIC (DESKTOP & MOBILE) ===
     const resizer = document.getElementById('drag-handle');
     const terminalPanel = document.getElementById('terminal-panel');
 
-    // בודקים שהאלמנטים קיימים (למקרה של טעינה בטלפון וכו')
     if (resizer && terminalPanel) {
         
         let isResizing = false;
 
+        // --- MOUSE EVENTS (Desktop) ---
         resizer.addEventListener('mousedown', (e) => {
             isResizing = true;
-            document.body.style.cursor = 'row-resize'; // שינוי סמן בכל המסך
-            resizer.classList.add('dragging'); // הוספת צבע כחול
-            
-            // מונע בחירת טקסט בזמן הגרירה
+            document.body.style.cursor = 'row-resize';
+            resizer.classList.add('dragging');
             e.preventDefault();
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isResizing) return;
-
-            // חישוב הגובה החדש: גובה החלון פחות המיקום של העכבר
-            // (כי הטרמינל הוא למטה)
             const newHeight = window.innerHeight - e.clientY;
-            
-            // החלת הגובה על הטרמינל
             terminalPanel.style.height = `${newHeight}px`;
         });
 
         document.addEventListener('mouseup', () => {
             if (isResizing) {
                 isResizing = false;
-                document.body.style.cursor = 'default'; // החזרת סמן רגיל
-                resizer.classList.remove('dragging'); // הסרת צבע כחול
+                document.body.style.cursor = 'default';
+                resizer.classList.remove('dragging');
             }
+        });
+
+        // --- TOUCH EVENTS (Mobile) ---
+        resizer.addEventListener('touchstart', (e) => {
+            isResizing = true;
+            resizer.classList.add('dragging');
+            // מונע גלילה של המסך בזמן שמנסים לגרור את הטרמינל
+            e.preventDefault(); 
+        }, { passive: false });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isResizing) return;
+            
+            // בטלפון צריך לקחת את המיקום של האצבע הראשונה (touches[0])
+            const touch = e.touches[0];
+            const newHeight = window.innerHeight - touch.clientY;
+            
+            terminalPanel.style.height = `${newHeight}px`;
+        }, { passive: false });
+
+        document.addEventListener('touchend', () => {
+            isResizing = false;
+            resizer.classList.remove('dragging');
         });
     }
 });
