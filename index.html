@@ -9,7 +9,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -67,6 +66,8 @@ class Developer:
         self.name = "Yoav Eliav"
         self.role = "Full Stack Developer"
         self.location = "Israel"
+        # שורה ארוכה לדוגמה כדי לבדוק את הגלילה האופקית שלך - תראה איך זה גולל יפה שמאלה וימינה!
+        self.description = "Loves writing clean code and building user-friendly interfaces."
 
     def say_hello(self):
         print("Welcome to my portfolio!")
@@ -124,40 +125,52 @@ GitHub: github.com/yoav
 
             <div class="terminal-wrapper" id="terminal-panel">
                 <div class="terminal-header">
-                    <span class="term-tab active">Terminal</span>
-                    <span class="term-tab">Local</span>
+                    <span class="term-tab active" data-target="terminal">Terminal</span>
+                    <span class="term-tab" data-target="local">Local</span>
                 </div>
                 
                 <div class="terminal-body">
-                    <div class="term-line">
-                        <span class="term-path">C:\Users\Yoav\Portfolio></span>
-                        <span class="term-cmd">python display_socials.py</span>
-                    </div>
-
-                    <div class="term-output">
-                        <div class="social-row">
-                            <i class="fa-brands fa-linkedin"></i>
-                            <span class="label">LinkedIn:</span>
-                            <a href="https://www.linkedin.com/in/YOUR_NAME" target="_blank">linkedin.com/in/yoav</a>
-                        </div>
-                        
-                        <div class="social-row">
-                            <i class="fa-brands fa-github"></i>
-                            <span class="label">GitHub:</span>
-                            <a href="https://github.com/YOUR_NAME" target="_blank">github.com/yoav</a>
+                    
+                    <div id="term-content-terminal" class="term-content active">
+                        <div class="term-line">
+                            <span class="term-path">C:\Users\Yoav\Portfolio></span>
+                            <span class="term-cmd">python display_socials.py</span>
                         </div>
 
-                        <div class="social-row">
-                            <i class="fa-solid fa-envelope"></i>
-                            <span class="label">Email:</span>
-                            <a href="mailto:yoav@example.com">yoav@example.com</a>
+                        <div class="term-output">
+                            <div class="social-row">
+                                <i class="fa-brands fa-linkedin"></i>
+                                <span class="label">LinkedIn:</span>
+                                <a href="https://www.linkedin.com/in/YOUR_NAME" target="_blank">linkedin.com/in/yoav</a>
+                            </div>
+                            
+                            <div class="social-row">
+                                <i class="fa-brands fa-github"></i>
+                                <span class="label">GitHub:</span>
+                                <a href="https://github.com/YOUR_NAME" target="_blank">github.com/yoav</a>
+                            </div>
+
+                            <div class="social-row">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span class="label">Email:</span>
+                                <a href="mailto:yoav@example.com">yoav@example.com</a>
+                            </div>
+                        </div>
+
+                        <div class="term-line">
+                            <span class="term-path">C:\Users\Yoav\Portfolio></span>
+                            <span class="typing-cursor">_</span>
                         </div>
                     </div>
 
-                    <div class="term-line">
-                        <span class="term-path">C:\Users\Yoav\Portfolio></span>
-                        <span class="typing-cursor">_</span>
+                    <div id="term-content-local" class="term-content" style="display: none;">
+                        <div class="local-message">
+                            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                            <div class="hello-text">HELLOO</div>
+                            <div class="system-msg">Local server is running smoothly...</div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -173,7 +186,6 @@ GitHub: github.com/yoav
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-
     <script src="script.js"></script> 
 
 </body>
