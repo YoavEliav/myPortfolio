@@ -1,4 +1,3 @@
-/* === Base Reset & Theme === */
 * {
     margin: 0;
     padding: 0;
@@ -6,20 +5,19 @@
 }
 
 body {
-    background-color: #2b2b2b; /* PyCharm Dark Background */
-    color: #a9b7c6; /* Default Text Color */
+    background-color: #2b2b2b;
+    color: #a9b7c6;
     font-family: 'JetBrains Mono', monospace;
     height: 100vh;
     overflow: hidden; 
 }
 
-/* === Main Layout === */
 .ide-container {
     display: flex;
-    height: calc(100vh - 25px); /* Leave space for status bar */
+    height: calc(100vh - 25px);
 }
 
-/* === Sidebar (Left) === */
+/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #313335;
@@ -52,7 +50,6 @@ body {
     color: #a9b7c6;
 }
 
-/* File List Styling */
 .file-list {
     list-style: none;
     padding-left: 0;
@@ -75,17 +72,16 @@ body {
 }
 
 .file-item.active {
-    background-color: #4b6eaf; /* Selection Blue */
+    background-color: #4b6eaf;
     color: #ffffff;
 }
 
-/* Icons Colors */
 .icon-python { color: #3572A5; }
 .icon-js { color: #f1e05a; }
 .icon-json { color: #f1e05a; }
 .icon-txt { color: #a9b7c6; }
 
-/* === Editor Area (Right) === */
+/* Editor Area */
 .editor-area {
     flex: 1;
     display: flex;
@@ -94,7 +90,6 @@ body {
     overflow: hidden;
 }
 
-/* Tabs Bar */
 .tabs-bar {
     height: 35px;
     background-color: #313335;
@@ -119,32 +114,36 @@ body {
     color: #a9b7c6;
 }
 
-/* Code Container */
+/* Code Container & Scrolling Logic */
 .code-container {
-    flex: 1; /* Takes available space above terminal */
+    flex: 1;
     display: flex;
     padding-top: 10px;
-    overflow-y: auto; /* Scroll if code is long */
+    overflow: hidden; /* הגלילה תתבצע בתוכן עצמו אם צריך */
 }
 
 .line-numbers {
-    width: 50px;
+    min-width: 50px; /* רוחב קבוע למספרים */
     text-align: right;
     padding-right: 15px;
     color: #606366;
     border-right: 1px solid #313335;
     user-select: none;
-    line-height: 1.5; 
+    line-height: 1.5;
+    background-color: #2b2b2b;
+    z-index: 5; /* שיישאר מעל בגלילה */
 }
 
 .code-content {
     flex: 1;
     padding-left: 15px;
     color: #a9b7c6;
-    line-height: 1.5; 
+    line-height: 1.5;
+    overflow-x: auto; /* כאן קורה הקסם: גלילה אופקית */
+    white-space: pre; /* מונע שבירת שורות */
 }
 
-/* === Terminal / CMD Section === */
+/* Terminal Styles */
 .terminal-wrapper {
     height: 180px;
     background-color: #2b2b2b;
@@ -163,6 +162,15 @@ body {
     color: #787878;
 }
 
+.term-tab {
+    cursor: pointer;
+    padding-bottom: 2px;
+}
+
+.term-tab:hover {
+    color: #a9b7c6;
+}
+
 .term-tab.active {
     color: #a9b7c6;
     border-bottom: 2px solid #a9b7c6;
@@ -174,13 +182,23 @@ body {
     font-size: 0.9rem;
     color: #a9b7c6;
     overflow-y: auto;
+    flex: 1;
 }
 
+/* Terminal Tabs Content */
+.term-content {
+    display: none; /* מוסתר כברירת מחדל */
+}
+
+.term-content.active {
+    display: block; /* רק הפעיל מוצג */
+}
+
+/* Terminal content styles */
 .term-line { margin-bottom: 5px; }
 .term-path { color: #ffc66d; }
 .term-cmd { color: #a9b7c6; }
 
-/* Social Links in Terminal */
 .social-row {
     margin-left: 20px;
     margin-bottom: 5px;
@@ -206,13 +224,41 @@ body {
     color: #808080;
 }
 
-/* Blinking Cursor (Terminal) */
+/* Local Tab (HELLOO) Styles */
+.local-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-top: 10px;
+    color: #629755; /* ירוק */
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.success-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.hello-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(98, 151, 85, 0.3);
+}
+
+.system-msg {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #808080;
+}
+
 .typing-cursor {
     animation: blink 1s step-end infinite;
     font-weight: bold;
 }
 
-/* === Status Bar === */
 .status-bar {
     height: 25px;
     background-color: #313335;
@@ -224,7 +270,22 @@ body {
     gap: 20px;
 }
 
-/* === PrismJS Overrides (Seamless Background) === */
+/* Resizer */
+.resizer {
+    height: 5px;
+    background-color: #2b2b2b;
+    cursor: row-resize;
+    width: 100%;
+    border-top: 1px solid #1e1e1e;
+    transition: background-color 0.2s;
+    z-index: 10;
+}
+
+.resizer:hover, .resizer.dragging {
+    background-color: #4d78cc;
+}
+
+/* Prism Overrides */
 pre[class*="language-"],
 code[class*="language-"] {
     background: transparent !important;
@@ -233,9 +294,9 @@ code[class*="language-"] {
     margin: 0 !important;
     font-family: 'JetBrains Mono', monospace !important;
     font-size: 1rem;
+    white-space: pre !important; /* חובה לגלילה אופקית! */
 }
 
-/* === Typewriter Effect Cursor (Main Editor) === */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -248,25 +309,19 @@ code[class*="language-"] {
     margin-left: 2px;
 }
 
-/* =========================================
-   Mobile Optimization (Responsive Design)
-   ========================================= */
-
+/* Mobile */
 @media screen and (max-width: 768px) {
-    
-    /* 1. Change layout to column */
     .ide-container {
         flex-direction: column;
         height: calc(100vh - 30px);
     }
 
-    /* 2. Sidebar becomes top horizontal menu */
     .sidebar {
         width: 100%;
         height: auto;
         border-right: none;
         border-bottom: 1px solid #1e1e1e;
-        overflow-x: auto; /* Scrollable menu */
+        overflow-x: auto;
     }
 
     .sidebar-header, .folder-root {
@@ -292,12 +347,15 @@ code[class*="language-"] {
         border: 1px solid #4b6eaf;
     }
 
-    /* 3. Hide Tabs */
     .tabs-bar { display: none; }
-
-    /* 4. Adjust Editor */
+    
     .editor-area { width: 100%; }
-    .code-container { overflow-x: auto; }
+
+    /* התאמות גלילה למובייל */
+    .code-content {
+        overflow-x: auto;
+        padding-bottom: 20px; /* מקום לאצבע */
+    }
 
     .code-content, .line-numbers {
         font-size: 0.85rem; 
@@ -306,17 +364,16 @@ code[class*="language-"] {
     
     .line-numbers {
         padding-right: 8px;
-        width: 35px;
+        min-width: 35px;
     }
 
-    /* 5. Adjust Terminal for Mobile */
     .terminal-wrapper {
         height: auto;
         min-height: 150px;
     }
     
     .term-path {
-        display: block; /* Break line for path */
+        display: block;
         margin-bottom: 2px;
     }
     
@@ -324,29 +381,4 @@ code[class*="language-"] {
         margin-left: 0;
         font-size: 0.85rem;
     }
-}
-
-/* === Resizer Handle === */
-.resizer {
-    height: 5px; /* עובי אזור התפיסה */
-    background-color: #2b2b2b; /* צבע ברירת מחדל */
-    cursor: row-resize; /* סמן של גרירה למעלה/למטה */
-    width: 100%;
-    border-top: 1px solid #1e1e1e;
-    transition: background-color 0.2s;
-    z-index: 10; /* שיהיה מעל הכל */
-}
-
-/* כשעוברים עם העכבר או גוררים */
-.resizer:hover, .resizer.dragging {
-    background-color: #4d78cc; /* צבע כחול שמסמן שאפשר לגרור */
-}
-
-/* עדכון לטרמינל כדי שיהיה גמיש */
-.terminal-wrapper {
-    /* נבטל את הגובה הקבוע שהיה קודם */
-    height: 180px; 
-    min-height: 50px; /* גובה מינימלי */
-    max-height: 80vh; /* גובה מקסימלי (שלא יסתיר את כל המסך) */
-    flex: none; /* כדי שהגרירה תשלוט בגובה ולא ה-Flexbox */
 }
