@@ -119,19 +119,32 @@ body {
     flex: 1;
     display: flex;
     padding-top: 10px;
-    overflow: hidden; /* הגלילה תתבצע בתוכן עצמו אם צריך */
+    
+    /* === השינוי הגדול === */
+    /* המיכל הראשי אחראי עכשיו על כל הגלילה (גם למטה וגם לצדדים) */
+    overflow: auto; 
+    
+    /* מוודא שהמיכל תמיד תופס את כל הרוחב כדי שהגלילה תהיה בקצה */
+    width: 100%; 
+    position: relative;
 }
 
 .line-numbers {
-    min-width: 50px; /* רוחב קבוע למספרים */
+    min-width: 50px;
     text-align: right;
     padding-right: 15px;
     color: #606366;
     border-right: 1px solid #313335;
     user-select: none;
     line-height: 1.5;
-    background-color: #2b2b2b;
-    z-index: 5; /* שיישאר מעל בגלילה */
+    
+    /* === טריק הדביקות === */
+    position: sticky; /* נדבק למקום */
+    left: 0;          /* נצמד לצד שמאל */
+    z-index: 10;      /* עולה מעל הטקסט הנגלל */
+    background-color: #2b2b2b; /* רקע אטום כדי שהטקסט לא יופיע מתחת למספרים */
+    height: fit-content; /* הגובה לפי התוכן */
+    min-height: 100%;    /* אבל לפחות בגובה המסך */
 }
 
 .code-content {
@@ -139,8 +152,11 @@ body {
     padding-left: 15px;
     color: #a9b7c6;
     line-height: 1.5;
-    overflow-x: auto; /* כאן קורה הקסם: גלילה אופקית */
-    white-space: pre; /* מונע שבירת שורות */
+    
+    /* ביטלנו את הגלילה הפנימית כאן */
+    /* overflow-x: auto;  <-- מחקנו את זה */
+    
+    white-space: pre; /* שומר על שורות ארוכות */
 }
 
 /* Terminal Styles */
