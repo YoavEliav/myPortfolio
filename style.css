@@ -325,3 +325,28 @@ code[class*="language-"] {
         font-size: 0.85rem;
     }
 }
+
+/* === Resizer Handle === */
+.resizer {
+    height: 5px; /* עובי אזור התפיסה */
+    background-color: #2b2b2b; /* צבע ברירת מחדל */
+    cursor: row-resize; /* סמן של גרירה למעלה/למטה */
+    width: 100%;
+    border-top: 1px solid #1e1e1e;
+    transition: background-color 0.2s;
+    z-index: 10; /* שיהיה מעל הכל */
+}
+
+/* כשעוברים עם העכבר או גוררים */
+.resizer:hover, .resizer.dragging {
+    background-color: #4d78cc; /* צבע כחול שמסמן שאפשר לגרור */
+}
+
+/* עדכון לטרמינל כדי שיהיה גמיש */
+.terminal-wrapper {
+    /* נבטל את הגובה הקבוע שהיה קודם */
+    height: 180px; 
+    min-height: 50px; /* גובה מינימלי */
+    max-height: 80vh; /* גובה מקסימלי (שלא יסתיר את כל המסך) */
+    flex: none; /* כדי שהגרירה תשלוט בגובה ולא ה-Flexbox */
+}

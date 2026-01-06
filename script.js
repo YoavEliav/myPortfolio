@@ -1,34 +1,29 @@
 // === Configuration ===
-const typingSpeed = 20; // Milliseconds per character (lower = faster)
-let isTyping = false; // Flag to prevent conflicts
+const typingSpeed = 20; 
+let isTyping = false; 
 
 // === Main Function to handle file switching ===
 function switchFile(fileId) {
-    if (isTyping) return; // Block switching while typing runs
+    if (isTyping) return; 
 
-    // 1. Remove 'active' class from sidebar
     document.querySelectorAll('.file-item').forEach(item => {
         item.classList.remove('active');
     });
 
-    // 2. Hide all content divs
     document.querySelectorAll('.file-content').forEach(content => {
         content.style.display = 'none';
     });
 
-    // 3. Activate clicked file in sidebar
     const activeItem = document.querySelector(`.file-item[data-file="${fileId}"]`);
     if (activeItem) {
         activeItem.classList.add('active');
     }
 
-    // 4. Show content
     const activeContent = document.getElementById(`content-${fileId}`);
     if (activeContent) {
         activeContent.style.display = 'block';
     }
 
-    // 5. Update Tab
     updateTab(fileId);
 }
 
@@ -37,32 +32,24 @@ function typeCode(elementId, text) {
     const container = document.getElementById(elementId);
     const codeBlock = container.querySelector('code');
     
-    // Reset
     codeBlock.textContent = ""; 
-    codeBlock.classList.add('typing'); // Add cursor
+    codeBlock.classList.add('typing'); 
     isTyping = true;
 
     let i = 0;
     
     function type() {
         if (i < text.length) {
-            // Add next character
             codeBlock.textContent += text.charAt(i);
             i++;
-            // Scroll to bottom while typing
-            /* container.scrollTop = container.scrollHeight; */ 
             setTimeout(type, typingSpeed);
         } else {
-            // Typing finished
             isTyping = false;
-            codeBlock.classList.remove('typing'); // Remove cursor
-            
-            // Trigger Prism to color the code!
+            codeBlock.classList.remove('typing'); 
             Prism.highlightElement(codeBlock);
         }
     }
     
-    // Start typing
     type();
 }
 
@@ -93,10 +80,10 @@ function updateTab(fileId) {
     tabElement.innerHTML = `<i class="${iconClass}"></i> ${fileName}`;
 }
 
-// === Initialize ===
+// === Initialize All Features ===
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Setup click listeners
+    // 1. Setup File Click Listeners
     const fileItems = document.querySelectorAll('.file-item');
     fileItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -105,11 +92,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- TRIGGER TYPING EFFECT ON LOAD ---
-    // We get the raw text from the "About" section before we clear it
+    // 2. Trigger Typing Effect
     const aboutElement = document.getElementById('content-about');
-    const rawText = aboutElement.querySelector('code').textContent;
-    
-    // Run the effect only on the "About" page initially
-    typeCode('content-about', rawText);
+    if (aboutElement) {
+        const rawText = aboutElement.querySelector('code').textContent;
+        typeCode('content-about', rawText);
+    }
+
+    // 3. === TERMINAL RESIZER LOGIC (NEW) ===
+    const resizer = document.getElementById('drag-handle');
+    const terminalPanel = document.getElementById('terminal-panel');
+
+    // בודקים שהאלמנטים קיימים (למקרה של טעינה בטלפון וכו')
+    if (resizer && terminalPanel) {
+        
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.body.style.cursor = 'row-resize'; // שינוי סמן בכל המסך
+            resizer.classList.add('dragging'); // הוספת צבע כחול
+            
+            // מונע בחירת טקסט בזמן הגרירה
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            // חישוב הגובה החדש: גובה החלון פחות המיקום של העכבר
+            // (כי הטרמינל הוא למטה)
+            const newHeight = window.innerHeight - e.clientY;
+            
+            // החלת הגובה על הטרמינל
+            terminalPanel.style.height = `${newHeight}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = 'default'; // החזרת סמן רגיל
+                resizer.classList.remove('dragging'); // הסרת צבע כחול
+            }
+        });
+    }
 });
