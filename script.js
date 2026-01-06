@@ -27,10 +27,33 @@ function switchFile(fileId) {
     updateTab(fileId);
 }
 
+// === Function to switch Terminal Tabs (New!) ===
+function switchTerminalTab(target) {
+    // 1. Update Tabs Visuals
+    document.querySelectorAll('.term-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if(tab.getAttribute('data-target') === target) {
+            tab.classList.add('active');
+        }
+    });
+
+    // 2. Switch Content
+    document.querySelectorAll('.term-content').forEach(content => {
+        content.classList.remove('active');
+        content.style.display = 'none'; // Ensure hidden
+    });
+
+    const activeContent = document.getElementById(`term-content-${target}`);
+    if (activeContent) {
+        activeContent.classList.add('active');
+        activeContent.style.display = 'block'; // Show active
+    }
+}
+
 // === Function to type code effect ===
 function typeCode(elementId, text) {
     const container = document.getElementById(elementId);
-    if (!container) return; // הגנה למקרה שהאלמנט לא נמצא
+    if (!container) return;
     
     const codeBlock = container.querySelector('code');
     
@@ -44,6 +67,8 @@ function typeCode(elementId, text) {
         if (i < text.length) {
             codeBlock.textContent += text.charAt(i);
             i++;
+            // Scroll to end of line if needed while typing
+            /* container.parentElement.scrollLeft = container.parentElement.scrollWidth; */
             setTimeout(type, typingSpeed);
         } else {
             isTyping = false;
@@ -55,7 +80,6 @@ function typeCode(elementId, text) {
     type();
 }
 
-// === Helper: Update Tab ===
 function updateTab(fileId) {
     const tabElement = document.getElementById('current-tab');
     let fileName = '';
@@ -85,7 +109,7 @@ function updateTab(fileId) {
 // === Initialize All Features ===
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Setup File Click Listeners
+    // 1. File Switching
     const fileItems = document.querySelectorAll('.file-item');
     fileItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -94,22 +118,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. Trigger Typing Effect
+    // 2. Terminal Tabs Switching (New!)
+    const termTabs = document.querySelectorAll('.term-tab');
+    termTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-target');
+            switchTerminalTab(target);
+        });
+    });
+
+    // 3. Typing Effect
     const aboutElement = document.getElementById('content-about');
     if (aboutElement) {
         const rawText = aboutElement.querySelector('code').textContent;
         typeCode('content-about', rawText);
     }
 
-    // 3. === TERMINAL RESIZER LOGIC (DESKTOP & MOBILE) ===
+    // 4. Terminal Resizer (Mouse & Touch)
     const resizer = document.getElementById('drag-handle');
     const terminalPanel = document.getElementById('terminal-panel');
 
     if (resizer && terminalPanel) {
-        
         let isResizing = false;
 
-        // --- MOUSE EVENTS (Desktop) ---
+        // Desktop
         resizer.addEventListener('mousedown', (e) => {
             isResizing = true;
             document.body.style.cursor = 'row-resize';
@@ -131,21 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- TOUCH EVENTS (Mobile) ---
+        // Mobile
         resizer.addEventListener('touchstart', (e) => {
             isResizing = true;
             resizer.classList.add('dragging');
-            // מונע גלילה של המסך בזמן שמנסים לגרור את הטרמינל
             e.preventDefault(); 
         }, { passive: false });
 
         document.addEventListener('touchmove', (e) => {
             if (!isResizing) return;
-            
-            // בטלפון צריך לקחת את המיקום של האצבע הראשונה (touches[0])
             const touch = e.touches[0];
             const newHeight = window.innerHeight - touch.clientY;
-            
             terminalPanel.style.height = `${newHeight}px`;
         }, { passive: false });
 
