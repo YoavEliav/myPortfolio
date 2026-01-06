@@ -113,18 +113,17 @@ body {
     border-top: 2px solid #4d78cc;
     color: #a9b7c6;
 }
-
 /* Code Container & Scrolling Logic */
 .code-container {
+    /* === האבא: אחראי על הגלילה === */
     flex: 1;
     display: flex;
+    flex-direction: row;
     padding-top: 10px;
     
-    /* === השינוי הגדול === */
-    /* המיכל הראשי אחראי עכשיו על כל הגלילה (גם למטה וגם לצדדים) */
+    /* זה הפס גלילה היחיד שאנחנו רוצים - של החלון */
     overflow: auto; 
     
-    /* מוודא שהמיכל תמיד תופס את כל הרוחב כדי שהגלילה תהיה בקצה */
     width: 100%; 
     position: relative;
 }
@@ -138,25 +137,35 @@ body {
     user-select: none;
     line-height: 1.5;
     
-    /* === טריק הדביקות === */
-    position: sticky; /* נדבק למקום */
-    left: 0;          /* נצמד לצד שמאל */
-    z-index: 10;      /* עולה מעל הטקסט הנגלל */
-    background-color: #2b2b2b; /* רקע אטום כדי שהטקסט לא יופיע מתחת למספרים */
-    height: fit-content; /* הגובה לפי התוכן */
-    min-height: 100%;    /* אבל לפחות בגובה המסך */
+    /* נדבק לצד שמאל בגלילה */
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    background-color: #2b2b2b;
+    
+    /* מוודא שהמספרים ממשיכים עד למטה */
+    min-height: 100%; 
 }
 
 .code-content {
-    flex: 1;
+    /* === הילד: רק מציג את הטקסט === */
+    flex: 1; 
     padding-left: 15px;
     color: #a9b7c6;
     line-height: 1.5;
     
-    /* ביטלנו את הגלילה הפנימית כאן */
-    /* overflow-x: auto;  <-- מחקנו את זה */
+    /* ביטלנו את כל הגלילות כאן כדי למנוע כפילות */
+    overflow: visible; 
     
-    white-space: pre; /* שומר על שורות ארוכות */
+    display: block; 
+    white-space: pre; /* שורות ארוכות */
+    
+    /* זה הטריק: מכריח את הטקסט לתפוס את הגובה גם אם הוא קצר */
+    /* זה דוחף את הפס של האבא לתחתית */
+    min-height: 100%; 
+    
+    /* מונע התכווצות */
+    box-sizing: border-box;
 }
 
 /* Terminal Styles */
@@ -301,7 +310,7 @@ body {
     background-color: #4d78cc;
 }
 
-/* Prism Overrides */
+/* === PrismJS Overrides (Seamless Background & No Scroll) === */
 pre[class*="language-"],
 code[class*="language-"] {
     background: transparent !important;
@@ -310,7 +319,10 @@ code[class*="language-"] {
     margin: 0 !important;
     font-family: 'JetBrains Mono', monospace !important;
     font-size: 1rem;
-    white-space: pre !important; /* חובה לגלילה אופקית! */
+    
+    /* מונע מהתוסף לייצר פס גלילה נוסף */
+    overflow: visible !important; 
+    white-space: pre !important; 
 }
 
 @keyframes blink {
@@ -397,4 +409,36 @@ code[class*="language-"] {
         margin-left: 0;
         font-size: 0.85rem;
     }
+}
+/* =========================================
+   Custom Scrollbar (PyCharm Style)
+   ========================================= */
+
+/* 1. הגדרת רוחב (לאנכי) וגובה (לאופקי) של הפס */
+::-webkit-scrollbar {
+    width: 12px;  /* עובי פס הגלילה האנכי */
+    height: 12px; /* עובי פס הגלילה האופקי */
+}
+
+/* 2. הרקע של המסילה (Track) */
+::-webkit-scrollbar-track {
+    background: #2b2b2b; /* אותו צבע כמו הרקע של האתר */
+}
+
+/* 3. הידית עצמה (Thumb) - החלק שגוררים */
+::-webkit-scrollbar-thumb {
+    background-color: #595b5d; /* אפור כהה */
+    border-radius: 6px; /* פינות עגולות */
+    border: 3px solid #2b2b2b; /* יוצר רווח קטן בין הידית לרקע */
+}
+
+/* 4. כשעוברים עם העכבר על הידית */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #6e7072; /* אפור קצת יותר בהיר */
+}
+
+/* תמיכה ב-Firefox (סטנדרט חדש) */
+* {
+    scrollbar-width: thin;          /* עובי דק */
+    scrollbar-color: #595b5d #2b2b2b; /* צבע ידית | צבע רקע */
 }
