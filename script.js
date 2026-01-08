@@ -11,13 +11,12 @@
 const typingSpeed = 20;  // Milliseconds per character
 let isTyping = false;    // Flag to prevent multiple typing animations
 
-// --- NEW: Local Terminal Configuration ---
+// Local Terminal Configuration
 const terminalConfig = {
     local: {
-        // Change the text here easily:
         bigTitle: "HELLO", 
         subTitle: "Thanks for exploring the site :)",
-        iconClass: "fa-solid fa-check" // FontAwesome icon class
+        iconClass: "fa-solid fa-check" 
     }
 };
 
@@ -38,7 +37,10 @@ class Developer:
 
 if __name__ == "__main__":
     yoav = Developer()
-    yoav.say_hello()`,
+    yoav.say_hello()
+    
+    
+    `,
 
     "skills": `{
   "languages": [

@@ -161,8 +161,9 @@ body {
     overflow: visible; 
     display: block; 
     
-    /* התיקון: מחקנו את white-space: pre מכאן */
-    /* white-space: pre; */
+    
+    /* white-space: pre;
+    DO NOT USE! MAKE THE "code" START FROM LINE 5+ */
     
     min-height: 100%; 
     box-sizing: border-box;
