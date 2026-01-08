@@ -1,17 +1,99 @@
-// === Configuration ===
-const typingSpeed = 20; 
-let isTyping = false; 
+/**
+ * Portfolio Interactive Script
+ * Author: Yoav Eliav
+ * Description: Handles IDE interactions, file switching, typing animations, 
+ * and dynamic content rendering for both code and terminal areas.
+ */
 
-// === Helper: Generate Line Numbers Dynamically ===
+// =========================================
+//  1. Configuration & Data
+// =========================================
+const typingSpeed = 20;  // Milliseconds per character
+let isTyping = false;    // Flag to prevent multiple typing animations
+
+// --- NEW: Local Terminal Configuration ---
+const terminalConfig = {
+    local: {
+        // Change the text here easily:
+        bigTitle: "HELLO", 
+        subTitle: "Thanks for exploring the site :)",
+        iconClass: "fa-solid fa-check" // FontAwesome icon class
+    }
+};
+
+// --- File Contents ---
+const fileContents = {
+    "about": `# Hello! I'm Yoav Eliav.
+# I am a passionate Software Developer.
+
+class Developer:
+    def __init__(self):
+        self.name = "Yoav Eliav"
+        self.role = "Full Stack Developer"
+        self.location = "Israel"
+        self.description = "Loves writing clean code."
+
+    def say_hello(self):
+        print("Welcome to my portfolio!")
+
+if __name__ == "__main__":
+    yoav = Developer()
+    yoav.say_hello()`,
+
+    "skills": `{
+  "languages": [
+    "Python",
+    "JavaScript",
+    "C++"
+  ],
+  "frameworks": {
+    "web": ["React", "Flask"],
+    "data": ["Pandas", "NumPy"]
+  }
+}`,
+
+    "projects": `# My Recent Projects
+
+def get_projects():
+    return [
+        "Portfolio Website (You are here)",
+        "AI Chatbot Agent",
+        "E-commerce Platform"
+    ]`,
+
+    "contact": `CONTACT DETAILS
+===============
+
+Email: yoav@example.com
+LinkedIn: linkedin.com/in/yoav
+GitHub: github.com/yoav`
+};
+
+// =========================================
+//  2. Helper Functions
+// =========================================
+
+/**
+ * Removes whitespace from the start of the string to ensure line 1 is truly line 1.
+ */
+function cleanText(text) {
+    if (!text) return "";
+    return text.replace(/^\s+/, '');
+}
+
+/**
+ * Generates dynamic line numbers based on text lines.
+ */
 function updateLineNumbers(text) {
     const lineNumbersCol = document.getElementById('line-numbers-col');
     if (!lineNumbersCol) return;
 
-    // סופר כמה שורות יש בטקסט (לפי כמות ה-Newlines)
-    // מוסיף 1 כי תמיד יש לפחות שורה אחת
+    if (!text) {
+        lineNumbersCol.innerHTML = '1<br>';
+        return;
+    }
+
     const linesCount = text.split('\n').length;
-    
-    // מייצר את ה-HTML של המספרים
     let linesHTML = '';
     for (let i = 1; i <= linesCount; i++) {
         linesHTML += `${i}<br>`;
@@ -20,79 +102,9 @@ function updateLineNumbers(text) {
     lineNumbersCol.innerHTML = linesHTML;
 }
 
-// === Main Function to handle file switching ===
-function switchFile(fileId) {
-    if (isTyping) return; 
-
-    // Reset Visuals
-    document.querySelectorAll('.file-item').forEach(item => {
-        item.classList.remove('active');
-    });
-
-    document.querySelectorAll('.file-content').forEach(content => {
-        content.style.display = 'none';
-    });
-
-    // Activate File Item
-    const activeItem = document.querySelector(`.file-item[data-file="${fileId}"]`);
-    if (activeItem) {
-        activeItem.classList.add('active');
-    }
-
-    // Show Content
-    const activeContent = document.getElementById(`content-${fileId}`);
-    if (activeContent) {
-        activeContent.style.display = 'block';
-        
-        // === UPDATE LINE NUMBERS FOR THE NEW FILE ===
-        // אנחנו לוקחים את הטקסט הנקי מתוך הקוד
-        const codeText = activeContent.querySelector('code').textContent;
-        updateLineNumbers(codeText);
-    }
-
-    updateTab(fileId);
-}
-
-// === Function to type code effect ===
-function typeCode(elementId, text) {
-    const container = document.getElementById(elementId);
-    if (!container) return;
-    
-    const codeBlock = container.querySelector('code');
-    
-    codeBlock.textContent = ""; 
-    codeBlock.classList.add('typing'); 
-    isTyping = true;
-    
-    // מאפסים את המספרים ל-1 בהתחלה
-    updateLineNumbers(""); 
-
-    let i = 0;
-    
-    function type() {
-        if (i < text.length) {
-            codeBlock.textContent += text.charAt(i);
-            i++;
-            
-            // === עדכון המספרים בזמן אמת תוך כדי הקלדה ===
-            // זה גורם למספרים "לרוץ" יחד עם הטקסט
-            if (text.charAt(i-1) === '\n') {
-                updateLineNumbers(codeBlock.textContent);
-            }
-            
-            setTimeout(type, typingSpeed);
-        } else {
-            isTyping = false;
-            codeBlock.classList.remove('typing'); 
-            Prism.highlightElement(codeBlock);
-            // וידוא סופי שהמספרים נכונים
-            updateLineNumbers(codeBlock.textContent);
-        }
-    }
-    
-    type();
-}
-
+/**
+ * Updates the tab bar to match the current file.
+ */
 function updateTab(fileId) {
     const tabElement = document.getElementById('current-tab');
     let fileName = '';
@@ -107,7 +119,85 @@ function updateTab(fileId) {
     tabElement.innerHTML = `<i class="${iconClass}"></i> ${fileName}`;
 }
 
-// === Switch Terminal Tabs ===
+// =========================================
+//  3. Core Logic: Content Rendering
+// =========================================
+
+/**
+ * Injects the Local Terminal content based on the config object.
+ * This keeps the HTML clean and allows easy text updates from JS.
+ */
+function initLocalTerminal() {
+    const localContainer = document.getElementById('term-content-local');
+    if (!localContainer) return;
+
+    // Template Literal to inject HTML with config values
+    const contentHTML = `
+        <div class="local-message">
+            <div class="success-icon"><i class="${terminalConfig.local.iconClass}"></i></div>
+            <div class="hello-text">${terminalConfig.local.bigTitle}</div>
+            <div class="system-msg">${terminalConfig.local.subTitle}</div>
+        </div>
+    `;
+
+    localContainer.innerHTML = contentHTML;
+}
+
+function switchFile(fileId) {
+    if (isTyping) return;
+
+    // UI Updates
+    document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.file-content').forEach(content => content.style.display = 'none');
+
+    // Set Active
+    const activeItem = document.querySelector(`.file-item[data-file="${fileId}"]`);
+    if (activeItem) activeItem.classList.add('active');
+
+    const activeContent = document.getElementById(`content-${fileId}`);
+    if (activeContent) {
+        activeContent.style.display = 'block';
+        const codeBlock = activeContent.querySelector('code');
+        
+        if (codeBlock.textContent.trim() === "") {
+             codeBlock.textContent = cleanText(fileContents[fileId]);
+             Prism.highlightElement(codeBlock);
+        }
+        updateLineNumbers(cleanText(fileContents[fileId]));
+    }
+
+    updateTab(fileId);
+}
+
+function typeCode(elementId, text) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+    
+    const codeBlock = container.querySelector('code');
+    codeBlock.textContent = ""; 
+    codeBlock.classList.add('typing'); 
+    isTyping = true;
+    updateLineNumbers(""); 
+
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            codeBlock.textContent += text.charAt(i);
+            i++;
+            if (text.charAt(i-1) === '\n' || i === 1) {
+                updateLineNumbers(codeBlock.textContent);
+            }
+            setTimeout(type, typingSpeed);
+        } else {
+            isTyping = false;
+            codeBlock.classList.remove('typing'); 
+            Prism.highlightElement(codeBlock);
+            updateLineNumbers(codeBlock.textContent);
+        }
+    }
+    type();
+}
+
 function switchTerminalTab(target) {
     document.querySelectorAll('.term-tab').forEach(tab => {
         tab.classList.remove('active');
@@ -126,60 +216,61 @@ function switchTerminalTab(target) {
     }
 }
 
-// === Initialize ===
+// =========================================
+//  4. Initialization
+// =========================================
+
 document.addEventListener('DOMContentLoaded', () => {
     
-    // File Listeners
+    // 1. Initialize Local Terminal Text
+    initLocalTerminal();
+
+    // 2. Event Listeners
     const fileItems = document.querySelectorAll('.file-item');
     fileItems.forEach(item => {
         item.addEventListener('click', () => {
-            const fileId = item.getAttribute('data-file');
-            switchFile(fileId);
+            switchFile(item.getAttribute('data-file'));
         });
     });
 
-    // Terminal Listeners
     const termTabs = document.querySelectorAll('.term-tab');
     termTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const target = tab.getAttribute('data-target');
-            switchTerminalTab(target);
+            switchTerminalTab(tab.getAttribute('data-target'));
         });
     });
 
-    // Initial Typing Effect
-    const aboutElement = document.getElementById('content-about');
-    if (aboutElement) {
-        const rawText = aboutElement.querySelector('code').textContent;
-        typeCode('content-about', rawText);
-    }
+    // 3. Start Intro Animation
+    const aboutText = cleanText(fileContents['about']);
+    typeCode('content-about', aboutText);
 
-    // === TERMINAL RESIZER ===
+    // 4. Resizer Logic
     const resizer = document.getElementById('drag-handle');
     const terminalPanel = document.getElementById('terminal-panel');
 
     if (resizer && terminalPanel) {
         let isResizing = false;
 
-        // Mouse
         resizer.addEventListener('mousedown', (e) => {
             isResizing = true;
             document.body.style.cursor = 'row-resize';
             resizer.classList.add('dragging');
             e.preventDefault();
         });
+        
         document.addEventListener('mousemove', (e) => {
             if (!isResizing) return;
             const newHeight = window.innerHeight - e.clientY;
             terminalPanel.style.height = `${newHeight}px`;
         });
+        
         document.addEventListener('mouseup', () => {
             isResizing = false;
             document.body.style.cursor = 'default';
             resizer.classList.remove('dragging');
         });
 
-        // Touch
+        // Touch Support
         resizer.addEventListener('touchstart', (e) => { isResizing = true; resizer.classList.add('dragging'); e.preventDefault(); }, { passive: false });
         document.addEventListener('touchmove', (e) => {
             if (!isResizing) return;

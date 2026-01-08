@@ -42,84 +42,27 @@
         </aside>
 
         <main class="editor-area">
-            
             <div class="tabs-bar">
                 <div class="tab active" id="current-tab">
                     <i class="fa-brands fa-python"></i> about_me.py
                 </div>
             </div>
-
+            
             <div class="code-container">
-                <div class="line-numbers">
-                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12
-                    <br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22
-                    <br>23<br>24<br>25<br>26<br>27
-                </div>
-                
+                <div class="line-numbers" id="line-numbers-col"></div>
                 <div class="code-content">
-                    
                     <div id="content-about" class="file-content active">
-                        <pre><code class="language-python">
-# Hello! I'm Yoav Eliav...
-# I am a passionate Software Developer.
-
-class Developer:
-    def __init__(self):
-        self.name = "Yoav Eliav"
-        self.role = "Full Stack Developer"
-        self.location = "Israel"
-        # שורה ארוכה לדוגמה כדי לבדוק את הגלילה האופקית שלך - תראה איך זה גולל יפה שמאלה וימינה!
-        self.description = "Loves writing clean code and building user-friendly interfaces."
-
-    def say_hello(self):
-        print("Welcome to my portfolio!")
-
-if __name__ == "__main__":
-    yoav = Developer()
-    yoav.say_hello()
-                        </code></pre>
+                        <pre><code class="language-python"></code></pre>
                     </div>
-
                     <div id="content-skills" class="file-content" style="display: none;">
-                        <pre><code class="language-json">
-{
-  "languages": [
-    "Python",
-    "JavaScript",
-    "C++"
-  ],
-  "frameworks": {
-    "web": ["React", "Flask"],
-    "data": ["Pandas", "NumPy"]
-  }
-}
-                        </code></pre>
+                        <pre><code class="language-json"></code></pre>
                     </div>
-
                     <div id="content-projects" class="file-content" style="display: none;">
-                        <pre><code class="language-python">
-# My Recent Projects
-
-def get_projects():
-    return [
-        "Portfolio Website (You are here)",
-        "AI Chatbot Agent",
-        "E-commerce Platform"
-    ]
-                        </code></pre>
+                        <pre><code class="language-python"></code></pre>
                     </div>
-
                      <div id="content-contact" class="file-content" style="display: none;">
-                        <pre><code class="language-text">
-CONTACT DETAILS
-===============
-
-Email: yoav@example.com
-LinkedIn: linkedin.com/in/yoav
-GitHub: github.com/yoav
-                        </code></pre>
+                        <pre><code class="language-text"></code></pre>
                     </div>
-
                 </div>
             </div>
 
@@ -166,11 +109,6 @@ GitHub: github.com/yoav
                     </div>
 
                     <div id="term-content-local" class="term-content" style="display: none;">
-                        <div class="local-message">
-                            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
-                            <div class="hello-text">HELLOO</div>
-                            <div class="system-msg">Local server is running smoothly...</div>
-                        </div>
                     </div>
 
                 </div>

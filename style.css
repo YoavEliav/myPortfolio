@@ -1,7 +1,12 @@
+/* =========================================
+   Base Reset & Theme
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -17,7 +22,9 @@ body {
     height: calc(100vh - 25px);
 }
 
-/* Sidebar */
+/* =========================================
+   Sidebar
+   ========================================= */
 .sidebar {
     width: 250px;
     background-color: #313335;
@@ -81,7 +88,9 @@ body {
 .icon-json { color: #f1e05a; }
 .icon-txt { color: #a9b7c6; }
 
-/* Editor Area */
+/* =========================================
+   Editor Area
+   ========================================= */
 .editor-area {
     flex: 1;
     display: flex;
@@ -113,62 +122,55 @@ body {
     border-top: 2px solid #4d78cc;
     color: #a9b7c6;
 }
-/* Code Container & Scrolling Logic */
+
+/* =========================================
+   Code Container & Scrolling Logic
+   ========================================= */
 .code-container {
-    /* === האבא: אחראי על הגלילה === */
     flex: 1;
     display: flex;
     flex-direction: row;
     padding-top: 10px;
-    
-    /* זה הפס גלילה היחיד שאנחנו רוצים - של החלון */
     overflow: auto; 
-    
     width: 100%; 
     position: relative;
 }
 
 .line-numbers {
-    min-width: 50px;
+    min-width: 45px;
     text-align: right;
-    padding-right: 15px;
+    padding-right: 10px;
     color: #606366;
     border-right: 1px solid #313335;
     user-select: none;
-    line-height: 1.5;
-    
-    /* נדבק לצד שמאל בגלילה */
+    line-height: 24px; 
+    font-size: 16px; 
     position: sticky;
     left: 0;
     z-index: 10;
     background-color: #2b2b2b;
-    
-    /* מוודא שהמספרים ממשיכים עד למטה */
     min-height: 100%; 
 }
 
 .code-content {
-    /* === הילד: רק מציג את הטקסט === */
     flex: 1; 
     padding-left: 15px;
     color: #a9b7c6;
-    line-height: 1.5;
-    
-    /* ביטלנו את כל הגלילות כאן כדי למנוע כפילות */
+    line-height: 24px;
+    font-size: 16px;
     overflow: visible; 
-    
     display: block; 
-    white-space: pre; /* שורות ארוכות */
     
-    /* זה הטריק: מכריח את הטקסט לתפוס את הגובה גם אם הוא קצר */
-    /* זה דוחף את הפס של האבא לתחתית */
+    /* התיקון: מחקנו את white-space: pre מכאן */
+    /* white-space: pre; */
+    
     min-height: 100%; 
-    
-    /* מונע התכווצות */
     box-sizing: border-box;
 }
 
-/* Terminal Styles */
+/* =========================================
+   Terminal Styles
+   ========================================= */
 .terminal-wrapper {
     height: 180px;
     background-color: #2b2b2b;
@@ -187,19 +189,9 @@ body {
     color: #787878;
 }
 
-.term-tab {
-    cursor: pointer;
-    padding-bottom: 2px;
-}
-
-.term-tab:hover {
-    color: #a9b7c6;
-}
-
-.term-tab.active {
-    color: #a9b7c6;
-    border-bottom: 2px solid #a9b7c6;
-}
+.term-tab { cursor: pointer; padding-bottom: 2px; }
+.term-tab:hover { color: #a9b7c6; }
+.term-tab.active { color: #a9b7c6; border-bottom: 2px solid #a9b7c6; }
 
 .terminal-body {
     padding: 10px;
@@ -210,16 +202,8 @@ body {
     flex: 1;
 }
 
-/* Terminal Tabs Content */
-.term-content {
-    display: none; /* מוסתר כברירת מחדל */
-}
-
-.term-content.active {
-    display: block; /* רק הפעיל מוצג */
-}
-
-/* Terminal content styles */
+.term-content { display: none; }
+.term-content.active { display: block; }
 .term-line { margin-bottom: 5px; }
 .term-path { color: #ffc66d; }
 .term-cmd { color: #a9b7c6; }
@@ -232,112 +216,48 @@ body {
     gap: 10px;
 }
 
-.social-row a {
-    color: #6897bb;
-    text-decoration: none;
-    transition: color 0.2s;
-}
+.social-row a { color: #6897bb; text-decoration: none; }
+.social-row a:hover { text-decoration: underline; color: #629755; }
+.social-row i { width: 20px; text-align: center; color: #808080; }
 
-.social-row a:hover {
-    text-decoration: underline;
-    color: #629755;
-}
-
-.social-row i {
-    width: 20px;
-    text-align: center;
-    color: #808080;
-}
-
-/* Local Tab (HELLOO) Styles */
 .local-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin-top: 10px;
-    color: #629755; /* ירוק */
-    font-family: 'JetBrains Mono', monospace;
+    display: flex; flex-direction: column; align-items: center; 
+    justify-content: center; height: 100%; margin-top: 10px; 
+    color: #629755; font-family: 'JetBrains Mono', monospace;
 }
-
-.success-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.hello-text {
-    font-size: 2.5rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(98, 151, 85, 0.3);
-}
-
-.system-msg {
-    margin-top: 5px;
-    font-size: 0.8rem;
-    color: #808080;
-}
-
-.typing-cursor {
-    animation: blink 1s step-end infinite;
-    font-weight: bold;
-}
+.success-icon { font-size: 2rem; margin-bottom: 10px; }
+.hello-text { font-size: 2.5rem; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px rgba(98, 151, 85, 0.3); }
+.system-msg { margin-top: 5px; font-size: 0.8rem; color: #808080; }
+.typing-cursor { animation: blink 1s step-end infinite; font-weight: bold; }
 
 .status-bar {
-    height: 25px;
-    background-color: #313335;
-    border-top: 1px solid #1e1e1e;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    font-size: 0.8rem;
-    gap: 20px;
+    height: 25px; background-color: #313335; border-top: 1px solid #1e1e1e;
+    display: flex; align-items: center; padding: 0 10px; font-size: 0.8rem; gap: 20px;
 }
 
 /* Resizer */
 .resizer {
-    height: 5px;
-    background-color: #2b2b2b;
-    cursor: row-resize;
-    width: 100%;
-    border-top: 1px solid #1e1e1e;
-    transition: background-color 0.2s;
-    z-index: 10;
+    height: 5px; background-color: #2b2b2b; cursor: row-resize; width: 100%;
+    border-top: 1px solid #1e1e1e; transition: background-color 0.2s; z-index: 10;
 }
+.resizer:hover, .resizer.dragging { background-color: #4d78cc; }
 
-.resizer:hover, .resizer.dragging {
-    background-color: #4d78cc;
-}
-
-/* === PrismJS Overrides (Seamless Background & No Scroll) === */
-pre[class*="language-"],
-code[class*="language-"] {
-    background: transparent !important;
-    text-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+/* PrismJS Overrides */
+pre[class*="language-"], code[class*="language-"] {
+    background: transparent !important; text-shadow: none !important;
+    padding: 0 !important; margin: 0 !important;
     font-family: 'JetBrains Mono', monospace !important;
-    font-size: 1rem;
-    
-    /* מונע מהתוסף לייצר פס גלילה נוסף */
-    overflow: visible !important; 
-    white-space: pre !important; 
+    font-size: 16px !important; 
+    line-height: 24px !important;
+    overflow: visible !important; white-space: pre !important; 
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.typing::after { content: '|'; color: #a9b7c6; animation: blink 1s step-end infinite; margin-left: 2px; }
 
-.typing::after {
-    content: '|';
-    color: #a9b7c6;
-    animation: blink 1s step-end infinite;
-    margin-left: 2px;
-}
-
-/* Mobile */
+/* =========================================
+   Mobile Optimization
+   ========================================= */
 @media screen and (max-width: 768px) {
     .ide-container {
         flex-direction: column;
@@ -345,100 +265,41 @@ code[class*="language-"] {
     }
 
     .sidebar {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #1e1e1e;
+        width: 100%; height: auto;
+        border-right: none; border-bottom: 1px solid #1e1e1e;
         overflow-x: auto;
     }
 
-    .sidebar-header, .folder-root {
-        display: none;
-    }
+    .sidebar-header, .folder-root { display: none; }
 
-    .file-list {
-        display: flex;
-        padding: 10px;
-        gap: 10px;
-        margin: 0;
-    }
+    .file-list { display: flex; padding: 10px; gap: 10px; margin: 0; }
 
     .file-item {
-        background-color: #3c3f41;
-        padding: 8px 12px;
-        border-radius: 5px;
-        white-space: nowrap;
-        border: 1px solid #1e1e1e;
+        background-color: #3c3f41; padding: 8px 12px;
+        border-radius: 5px; white-space: nowrap; border: 1px solid #1e1e1e;
     }
 
-    .file-item.active {
-        border: 1px solid #4b6eaf;
-    }
-
+    .file-item.active { border: 1px solid #4b6eaf; }
     .tabs-bar { display: none; }
-    
     .editor-area { width: 100%; }
 
-    /* התאמות גלילה למובייל */
     .code-content {
-        overflow-x: auto;
-        padding-bottom: 20px; /* מקום לאצבע */
+        padding-bottom: 20px;
     }
 
-    .code-content, .line-numbers {
-        font-size: 0.85rem; 
-        line-height: 1.4;
-    }
-    
     .line-numbers {
-        padding-right: 8px;
         min-width: 35px;
+        padding-right: 5px;
     }
 
-    .terminal-wrapper {
-        height: auto;
-        min-height: 150px;
-    }
-    
-    .term-path {
-        display: block;
-        margin-bottom: 2px;
-    }
-    
-    .social-row {
-        margin-left: 0;
-        font-size: 0.85rem;
-    }
-}
-/* =========================================
-   Custom Scrollbar (PyCharm Style)
-   ========================================= */
-
-/* 1. הגדרת רוחב (לאנכי) וגובה (לאופקי) של הפס */
-::-webkit-scrollbar {
-    width: 12px;  /* עובי פס הגלילה האנכי */
-    height: 12px; /* עובי פס הגלילה האופקי */
+    .terminal-wrapper { height: auto; min-height: 150px; }
+    .term-path { display: block; margin-bottom: 2px; }
+    .social-row { margin-left: 0; font-size: 0.85rem; }
 }
 
-/* 2. הרקע של המסילה (Track) */
-::-webkit-scrollbar-track {
-    background: #2b2b2b; /* אותו צבע כמו הרקע של האתר */
-}
-
-/* 3. הידית עצמה (Thumb) - החלק שגוררים */
-::-webkit-scrollbar-thumb {
-    background-color: #595b5d; /* אפור כהה */
-    border-radius: 6px; /* פינות עגולות */
-    border: 3px solid #2b2b2b; /* יוצר רווח קטן בין הידית לרקע */
-}
-
-/* 4. כשעוברים עם העכבר על הידית */
-::-webkit-scrollbar-thumb:hover {
-    background-color: #6e7072; /* אפור קצת יותר בהיר */
-}
-
-/* תמיכה ב-Firefox (סטנדרט חדש) */
-* {
-    scrollbar-width: thin;          /* עובי דק */
-    scrollbar-color: #595b5d #2b2b2b; /* צבע ידית | צבע רקע */
-}
+/* Scrollbar Style */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #2b2b2b; }
+::-webkit-scrollbar-thumb { background-color: #595b5d; border-radius: 6px; border: 3px solid #2b2b2b; }
+::-webkit-scrollbar-thumb:hover { background-color: #6e7072; }
+* { scrollbar-width: thin; scrollbar-color: #595b5d #2b2b2b; }
